@@ -37,11 +37,21 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
       appBar: AppBar(
         title: const Text('Video Player'),
       ),
-      body: YoutubePlayer(
-        controller: _controller,
-        liveUIColor: Colors.amber,
-        showVideoProgressIndicator: true,
-      ),
+      body: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _controller,
+            liveUIColor: Colors.amber,
+            showVideoProgressIndicator: true,
+          ),
+          builder: (context, player) {
+            return Column(
+              children: [
+                // some widgets
+                Expanded(child: player),
+                //some other widgets
+              ],
+            );
+          }),
     );
   }
 }

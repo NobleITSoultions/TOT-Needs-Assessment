@@ -12,7 +12,7 @@ String recipeModelToJson(List<RecipeModel> data) =>
 
 class RecipeModel {
   RecipeModel({
-    required this.id,
+    this.id,
     required this.title,
     required this.category,
     required this.rate,
@@ -21,7 +21,7 @@ class RecipeModel {
     required this.ingredents,
   });
 
-  int id;
+  int? id;
   String title;
   String category;
   double rate;
@@ -36,8 +36,11 @@ class RecipeModel {
         rate: json["rate"],
         image: json["image"],
         video: json["video"],
-        ingredents: List<Ingredent>.from(
-            json["ingredents"].map((x) => Ingredent.fromJson(x))),
+        ingredents: json["ingredents"].runtimeType == String
+            ? List<Ingredent>.from(jsonDecode(json["ingredents"])
+                .map((x) => Ingredent.fromJson(x)))
+            : List<Ingredent>.from(
+                json["ingredents"].map((x) => Ingredent.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +50,8 @@ class RecipeModel {
         "rate": rate,
         "image": image,
         "video": video,
-        "ingredents": List<dynamic>.from(ingredents.map((x) => x.toJson())),
+        "ingredents":
+            jsonEncode(List<dynamic>.from(ingredents.map((x) => x.toJson()))),
       };
 }
 

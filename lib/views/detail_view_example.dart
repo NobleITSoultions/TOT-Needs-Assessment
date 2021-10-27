@@ -1,9 +1,22 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:recipe_app/controller/bookmark_manager.dart';
+import 'package:recipe_app/model/recipe_model.dart';
+import 'package:recipe_app/views/video_player_view.dart';
 
-class DetialViewExample extends StatelessWidget {
-  const DetialViewExample({Key? key}) : super(key: key);
+class DetialViewExample extends StatefulWidget {
+  DetialViewExample({Key? key, required this.recipeModel}) : super(key: key);
+
+  final RecipeModel recipeModel;
+
+  @override
+  _DetialViewExampleState createState() => _DetialViewExampleState();
+}
+
+class _DetialViewExampleState extends State<DetialViewExample> {
+  final BookmarkManager bookmarkManager = BookmarkManager();
+  bool _isBookmarked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,7 @@ class DetialViewExample extends StatelessWidget {
         child: Stack(
           children: [
             Image.network(
-              'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1287&q=80',
+              widget.recipeModel.image,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.cover,
@@ -34,12 +47,21 @@ class DetialViewExample extends StatelessWidget {
               children: [
                 const Spacer(),
                 const Spacer(),
-                 CircleAvatar(
+                CircleAvatar(
                   backgroundColor: Colors.amber,
-                  child: Icon(
-                    Icons.play_arrow,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VideoPlayerView(
+                              videoUrl: widget.recipeModel.video),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.play_arrow),
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    size: 60,
+                    iconSize: 60,
                   ),
                   radius: 40,
                 ),
@@ -48,7 +70,8 @@ class DetialViewExample extends StatelessWidget {
                   height: 10,
                 ),
                 Card(
-                  color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.6),
+                  color:
+                      Theme.of(context).scaffoldBackgroundColor.withOpacity(.6),
                   elevation: 0,
                   margin: const EdgeInsets.all(24),
                   shape: RoundedRectangleBorder(
@@ -71,7 +94,7 @@ class DetialViewExample extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Title here',
+                          widget.recipeModel.title,
                           style: Theme.of(context)
                               .textTheme
                               .headline5!
@@ -80,7 +103,7 @@ class DetialViewExample extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'category',
+                              widget.recipeModel.category,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             const Spacer(),
@@ -92,131 +115,54 @@ class DetialViewExample extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              '5.0',
+                              "${widget.recipeModel.rate}",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
                           elevation: 0,
-                          color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.6),
+                          color: Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(.6),
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Wheat',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '270 gr',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView.separated(
+                                  shrinkWrap: true,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Ingredent ingredent =
+                                        widget.recipeModel.ingredents[index];
+                                    return Row(
+                                      children: [
+                                        Text(
+                                          ingredent.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          ingredent.quantity,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          SizedBox(height: 7),
+                                  itemCount:
+                                      widget.recipeModel.ingredents.length)),
                         )
                       ],
                     ),
@@ -232,30 +178,45 @@ class DetialViewExample extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Material(
-                        shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side:
-                                  BorderSide(color: Colors.grey.shade300)),
-             
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey.shade300)),
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: BackButton(),
+                        child: BackButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: const Padding(
+                      onPressed: () async {
+                        _isBookmarked
+                            ? await bookmarkManager
+                                .deleteBookmark(widget.recipeModel)
+                            : await bookmarkManager
+                                .saveBookmark(widget.recipeModel);
+                        setState(() {
+                          _isBookmarked = !_isBookmarked;
+                        });
+                      },
+                      child: Padding(
                         padding: EdgeInsets.all(12.0),
-                        child: Icon(Icons.bookmark_border_outlined),
+                        child: Icon(
+                          _isBookmarked
+                              ? Icons.bookmark_added
+                              : Icons.bookmark_border_outlined,
+                          color: Colors.amber,
+                        ),
                       ),
                       style: TextButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).scaffoldBackgroundColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
-                              side:
-                                  BorderSide(color: Colors.grey.shade300))),
+                              side: BorderSide(color: Colors.grey.shade300))),
                     )
                   ],
                 ),
